@@ -10,7 +10,7 @@
 	<ul>
 		<li>Login to your virtual environment</li>
 		<li>Open the project directory</li>
-		<li>Type pip install -r requirements.txt<br>in the command line</li>
+		<li>Type <br> pip install -r requirements.txt<br>in the command line</li>
 	</ul>
 
 <li>Open main.py file in your IDE</li>
