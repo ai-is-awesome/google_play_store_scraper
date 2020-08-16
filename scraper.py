@@ -26,7 +26,7 @@ class GooglePlayStoreScraper:
     
     
     def get_first_link_from_search_results(self):
-        first_card =self.query_soup.find('div', class_ = 'Vpfmgd')
+        first_card = self.query_soup.find('div', class_ = 'Vpfmgd')
         if first_card:
             url = self.origin_url + first_card.find('a').get('href') if first_card.find('a') else None
             if url:
@@ -55,6 +55,7 @@ class GooglePlayStoreScraper:
                        
                        
                        }
+        
         app_url = self.get_first_link_from_search_results()
         if not app_url.startswith('https://'):
             app_url = 'https://' + app_url
@@ -72,7 +73,7 @@ class GooglePlayStoreScraper:
             details_dict['developer_name'] = soup.find('span', class_ = 'T32cc').text
         
             developer_a_tag = soup.find('span', class_ = 'T32cc').find('a')
-            details_dict['developer_url'] = developer_a_tag.get('href') if developer_a_tag else None
+            details_dict['developer_url'] = self.origin_url + developer_a_tag.get('href') if developer_a_tag else None
             
             
         
@@ -80,7 +81,7 @@ class GooglePlayStoreScraper:
         
         details_dict['genre'] = strip_line.find('a', attrs = {'itemprop' : 'genre'}).text if strip_line and strip_line.find('a', attrs = {'itemprop' : 'genre'}) else None
         
-        details_dict['genre_url'] = strip_line.find('a', attrs = {'itemprop' : 'genre'}).get('href') if strip_line and strip_line.find('a', attrs = {'itemprop' : 'genre'}) else None
+        details_dict['genre_url'] = self.origin_url + strip_line.find('a', attrs = {'itemprop' : 'genre'}).get('href') if strip_line and strip_line.find('a', attrs = {'itemprop' : 'genre'}) else None
         
         ratings_div = soup.find('div', class_ = 'K9wGie')
         
@@ -95,6 +96,9 @@ class GooglePlayStoreScraper:
         price_span = soup.find('span', class_ = 'oocvOe')
         
         details_dict['price'] = price_span.text if price_span else None
+        
+        if details_dict['price'] == 'Install':
+            details_dict['price'] = 'Free'
         
         footer_details = self.get_footer_details()
         
@@ -126,20 +130,6 @@ class GooglePlayStoreScraper:
     
 
 Scraper = GooglePlayStoreScraper
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
